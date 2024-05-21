@@ -35,7 +35,7 @@ def extract_product_details(product_url):
         soup = BeautifulSoup(html_content, "html.parser")
 
         product_name = soup.find("span", class_="base", itemprop="name").text.strip()
-        product_status_element = soup.find("div", class_="stock unavailable").span
+        product_status_element = soup.find("div", class_="stock available").span
         product_status = product_status_element.text.strip() if product_status_element else None
 
         
@@ -90,7 +90,7 @@ def send_product_data_to_telegram():
             product_url = product_data.get("url", "")
             image_url = product_data.get("image_url", "")
 
-            if product_status == "سيتم توفيرها في المخزون قريباً" and product_name not in sent_products:
+            if product_status == "متوفر" and product_name not in sent_products:
                 message_text = f"Product Name: {product_name}\nProduct Status: {product_status}"
                 reply_markup = {
                     "inline_keyboard": [[{"text": "View Product", "url": product_url}]]
